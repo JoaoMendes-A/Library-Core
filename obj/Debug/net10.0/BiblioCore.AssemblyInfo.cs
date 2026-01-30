@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BiblioCore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fcaf5030c2e0e76643af5a90308c6581bfd1e11e")]
 [assembly: System.Reflection.AssemblyProductAttribute("BiblioCore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BiblioCore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
