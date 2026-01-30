@@ -6,6 +6,7 @@ class SistemaBiblioteca
     static void Main()
     {
         List<Biblioteca> livros = new List<Biblioteca>();
+        List<Usuario> usuarios = new List<Usuario>();
 
         bool executando = true;
 
@@ -19,7 +20,7 @@ class SistemaBiblioteca
             Console.WriteLine("5 - Listar livros");
             Console.WriteLine("6 - Listar usuários");
             Console.WriteLine("7 - Listar empréstimos ativos");
-            Console.WriteLine("0 - Sair");
+            Console.WriteLine("8 - Sair");
             Console.WriteLine("Opção: ");
 
             int opcao = LerInt();
@@ -31,7 +32,7 @@ class SistemaBiblioteca
                     break;
 
                 case 2:
-
+                    CadastrarUsuario(usuarios);
                     break;
 
                 case 3:
@@ -65,7 +66,7 @@ class SistemaBiblioteca
             }
         }
     }
-
+// ==================== CADASTRAR LIVRO ===================== //
 static void CadastrarLivro(List<Biblioteca> livros)
 {
     Console.WriteLine("\n=== Cadastro ===");
@@ -79,12 +80,27 @@ static void CadastrarLivro(List<Biblioteca> livros)
     Console.WriteLine("Quantidade No Estoque:");
     int quantidade = LerInt();
 
-    int id = 1;
+    int id = GerarIdAleatorio();
 
     Biblioteca novoLivro = new Biblioteca(id, titulo, autor, quantidade);
     livros.Add(novoLivro);
     
 }
+
+// ====================== CADASTRAR USUÁRIO ==================== //
+static void CadastrarUsuario(List<Usuario> usuarios)
+    {
+        Console.WriteLine("\n=== Cadastro De Usuário ===");
+
+        Console.WriteLine("Nome:");
+        string nome = LerString();
+
+        int id = GerarIdAleatorio();
+
+        Usuario novoUsuario = new Usuario(id, nome);
+        usuarios.Add(novoUsuario);
+
+    }
 
 // ====================== LEITURA SEGURA ====================== //
 static int LerInt()
@@ -115,9 +131,18 @@ static string LerString()
         return texto;
         
     }
+// ===================== GERA ID ====================== //
 
-// =================== CLASE LIVROS ==================== //
-class Biblioteca
+static int GerarIdAleatorio()
+    {
+        Random rdn = new Random();
+        int id = rdn.Next(10000, 100000);
+
+        return id;
+    }
+
+// =================== CLASSE LIVROS ==================== //
+public class Biblioteca
 {
     public int Id { get; set; }
     public string? Titulo { get; set; }
@@ -133,5 +158,17 @@ class Biblioteca
     }
 }
 
+// ================== CLASSE USUÁRIO =================== // 
 
+public class Usuario
+    {
+        public int Id { get; set; }
+        public string? Nome { get; set; }
+
+        public Usuario(int id, string nome)
+        {
+            Id = id;
+            Nome = nome;
+        }
+    }
 }
