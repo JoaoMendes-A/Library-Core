@@ -49,7 +49,7 @@ class SistemaBiblioteca
                     break;
                 
                 case 6:
-
+                    ListarUsuarios(usuarios);
                     break;
                 
                 case 7:
@@ -111,6 +111,14 @@ static void CadastrarUsuario(List<Usuario> usuarios)
         Usuario novoUsuario = new Usuario(id, nome);
         usuarios.Add(novoUsuario);
 
+    }
+
+static void ListarUsuarios(List<Usuario> usuarios)
+    {
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"Nome: {usuario.Nome} | ID: {usuario.Id}");
+        }
     }
 
 // ====================== LEITURA SEGURA ====================== //
