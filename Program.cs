@@ -90,9 +90,15 @@ static void CadastrarLivro(List<Biblioteca> livros)
 }
 static void ListarLivros(List<Biblioteca> livros)
     {
-        foreach (var livro in livros)
+        if (livros.Count > 0)
         {
-            Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade}");
+            foreach (var livro in livros)
+            {
+                Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade}");
+            }
+        } else
+        {
+            Console.WriteLine("Nenhum livro cadastrado.");
         }
     }
 
@@ -115,9 +121,15 @@ static void CadastrarUsuario(List<Usuario> usuarios)
 
 static void ListarUsuarios(List<Usuario> usuarios)
     {
-        foreach (var usuario in usuarios)
+        if (usuarios.Count > 0)
         {
-            Console.WriteLine($"Nome: {usuario.Nome} | ID: {usuario.Id}");
+            foreach (var usuario in usuarios)
+            {
+                Console.WriteLine($"Nome: {usuario.Nome} | ID: {usuario.Id}");
+            }
+        } else
+        {
+            Console.WriteLine("Nenhum usuário cadastrado.");
         }
     }
 
