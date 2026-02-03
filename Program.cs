@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.VisualBasic;
 
 class SistemaBiblioteca
 {
@@ -44,7 +45,7 @@ class SistemaBiblioteca
                     break;
                 
                 case 5:
-
+                    ListarLivros(livros);
                     break;
                 
                 case 6:
@@ -84,8 +85,18 @@ static void CadastrarLivro(List<Biblioteca> livros)
 
     Biblioteca novoLivro = new Biblioteca(id, titulo, autor, quantidade);
     livros.Add(novoLivro);
+
     
 }
+static void ListarLivros(List<Biblioteca> livros)
+    {
+        foreach (var livro in livros)
+        {
+            Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade}");
+        }
+    }
+
+
 
 // ====================== CADASTRAR USUÁRIO ==================== //
 static void CadastrarUsuario(List<Usuario> usuarios)
@@ -103,7 +114,7 @@ static void CadastrarUsuario(List<Usuario> usuarios)
     }
 
 // ====================== LEITURA SEGURA ====================== //
-static int LerInt()
+static int LerInt() // Lê e verifica se o numero é inteiro
     {
        int valor;
 
@@ -115,7 +126,7 @@ static int LerInt()
         return valor;
     }
 
-static string LerString()
+static string LerString() // Lê e verifica se a string não está vazia
     {    
         string? texto;
 
@@ -133,7 +144,7 @@ static string LerString()
     }
 // ===================== GERA ID ====================== //
 
-static int GerarIdAleatorio()
+static int GerarIdAleatorio() 
     {
         Random rdn = new Random();
         int id = rdn.Next(10000, 100000);
@@ -141,7 +152,7 @@ static int GerarIdAleatorio()
         return id;
     }
 
-// =================== CLASSE LIVROS ==================== //
+// =================== CLASSES ==================== //
 public class Biblioteca
 {
     public int Id { get; set; }
@@ -156,9 +167,8 @@ public class Biblioteca
         Autor = autor;
         Quantidade = quantidade;
     }
-}
 
-// ================== CLASSE USUÁRIO =================== // 
+}
 
 public class Usuario
     {
