@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualBasic;
 
 class SistemaBiblioteca
@@ -37,7 +38,7 @@ class SistemaBiblioteca
                     break;
 
                 case 3:
-
+                    EmprestarLivro(livros);
                     break;
 
                 case 4:
@@ -94,12 +95,40 @@ static void ListarLivros(List<Biblioteca> livros)
         {
             foreach (var livro in livros)
             {
-                Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade}");
+                Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade} | Id: {livro.Id}");
             }
         } else
         {
             Console.WriteLine("Nenhum livro cadastrado.");
         }
+    }
+
+static void EmprestarLivro(List<Biblioteca> livros)
+    {
+        int idlivro = ProcurarLivro(livros);
+        Console.WriteLine(idlivro);
+    }
+
+static int ProcurarLivro(List<Biblioteca> livros)
+    {
+        Console.WriteLine("Digite o nome do livro que deseja emprestar:");
+        string procurar = LerString();
+
+        foreach(var livro in livros)
+        {
+            if (livro.Titulo == procurar)
+            {
+                Console.WriteLine("Livro encontrado");
+                return livro.Id;
+            }
+        }
+        Console.WriteLine("Livro não encontrado");
+        return 1;
+    } 
+
+static void OperarEmprestimo(List<Biblioteca> livros)
+    {
+        
     }
 
 
