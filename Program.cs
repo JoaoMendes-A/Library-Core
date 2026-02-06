@@ -173,10 +173,16 @@ static void EmprestarLivro(List<Emprestimo> emprestimos, List<Biblioteca> livros
         {
             Console.WriteLine("Livro ou usuario não encontrado.");
             return;
-        } else
+        } 
+
+        if (livro.Quantidade <= 0)
         {
-            OperarEmprestimo(emprestimos, usuario.Nome, usuario.Id, livro.Titulo);
+            Console.WriteLine("Livro indisponivel.");
+            return;
         }
+        
+        OperarEmprestimo(livros, emprestimos, usuario.Nome, usuario.Id, livro.Titulo);
+        livro.Quantidade -= 1;
     }
 
 static string SolicitarLivro()
@@ -201,10 +207,11 @@ static Usuario? ValidarUsuario(List<Usuario> usuarios, string nomeUsuario)
         return usuarios.Find(u => u.Nome == nomeUsuario);
     }
 
-static void OperarEmprestimo(List<Emprestimo> emprestimos, string nomeUsuario, int idUsuario, string tituloLivro)
+static void OperarEmprestimo(List<Biblioteca> livros, List<Emprestimo> emprestimos, string nomeUsuario, int idUsuario, string tituloLivro)
     {
         Emprestimo novoEmprestimo = new Emprestimo(nomeUsuario, idUsuario, tituloLivro);
         emprestimos.Add (novoEmprestimo);
+        
     }
 
 
@@ -303,3 +310,4 @@ public class Emprestimo
         }
     }
 }
+
