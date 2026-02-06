@@ -9,21 +9,13 @@ class SistemaBiblioteca
     {
         List<Biblioteca> livros = new List<Biblioteca>();
         List<Usuario> usuarios = new List<Usuario>();
+        List<Emprestimo> emprestimos = new List<Emprestimo>();
 
         bool executando = true;
 
         while (executando)
         {
-            Console.WriteLine("\n=== MENU ===");
-            Console.WriteLine("1 - Cadastrar livro");
-            Console.WriteLine("2 - Cadastrar usuário");
-            Console.WriteLine("3 - Emprestar livro");
-            Console.WriteLine("4 - Devolver livro");
-            Console.WriteLine("5 - Listar livros");
-            Console.WriteLine("6 - Listar usuários");
-            Console.WriteLine("7 - Listar empréstimos ativos");
-            Console.WriteLine("8 - Sair");
-            Console.WriteLine("Opção: ");
+            ExibirMenu();
 
             int opcao = LerInt();
 
@@ -38,7 +30,7 @@ class SistemaBiblioteca
                     break;
 
                 case 3:
-                    EmprestarLivro(livros);
+                    EmprestarLivro(emprestimos, livros, usuarios);
                     break;
 
                 case 4:
@@ -54,7 +46,7 @@ class SistemaBiblioteca
                     break;
                 
                 case 7:
-
+                    ListarEmprestimos(emprestimos);
                     break;
 
                 case 8:
@@ -68,6 +60,71 @@ class SistemaBiblioteca
             }
         }
     }
+
+// ==================== MENU ==================== //
+
+static void ExibirMenu()
+    {
+        Console.WriteLine("\n=== MENU ===");
+        Console.WriteLine("1 - Cadastrar livro");
+        Console.WriteLine("2 - Cadastrar usuário");
+        Console.WriteLine("3 - Emprestar livro");
+        Console.WriteLine("4 - Devolver livro");
+        Console.WriteLine("5 - Listar livros");
+        Console.WriteLine("6 - Listar usuários");
+        Console.WriteLine("7 - Listar empréstimos ativos");
+        Console.WriteLine("8 - Sair");
+        Console.WriteLine("Opção: ");
+    }
+
+// ==================== LISTAGENS =========================== //
+
+// LISTA LIVROS
+static void ListarLivros(List<Biblioteca> livros)
+    {
+        if (livros.Count > 0)
+        {
+            foreach (var livro in livros)
+            {
+                Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade} | Id: {livro.Id}");
+            }
+        } else
+        {
+            Console.WriteLine("Nenhum livro cadastrado.");
+        }
+    }
+
+// LISTA USUARIOS
+static void ListarUsuarios(List<Usuario> usuarios)
+    {
+        if (usuarios.Count > 0)
+        {
+            foreach (var usuario in usuarios)
+            {
+                Console.WriteLine($"Nome: {usuario.Nome} | ID: {usuario.Id}");
+            }
+        } else
+        {
+            Console.WriteLine("Nenhum usuário cadastrado.");
+        }
+    }
+
+//LISTA EMPRESTIMOS
+static void ListarEmprestimos(List<Emprestimo> emprestimos)
+    {
+        if (emprestimos.Count > 0)
+        {
+            foreach (var emprestimo in emprestimos)
+            {
+                Console.WriteLine($"O livro: {emprestimo.TituloLivro} | Emprestado para: {emprestimo.Nome} ");
+            }
+        } else
+        {
+            Console.WriteLine("Nenhum emprestimo cadastrado.");
+        }
+    }
+
+
 // ==================== CADASTRAR LIVRO ===================== //
 static void CadastrarLivro(List<Biblioteca> livros)
 {
@@ -87,51 +144,7 @@ static void CadastrarLivro(List<Biblioteca> livros)
     Biblioteca novoLivro = new Biblioteca(id, titulo, autor, quantidade);
     livros.Add(novoLivro);
 
-    
 }
-static void ListarLivros(List<Biblioteca> livros)
-    {
-        if (livros.Count > 0)
-        {
-            foreach (var livro in livros)
-            {
-                Console.WriteLine($"Titulo: {livro.Titulo} | Autor: {livro.Autor} | Quantidade: {livro.Quantidade} | Id: {livro.Id}");
-            }
-        } else
-        {
-            Console.WriteLine("Nenhum livro cadastrado.");
-        }
-    }
-
-static void EmprestarLivro(List<Biblioteca> livros)
-    {
-        int idlivro = ProcurarLivro(livros);
-        Console.WriteLine(idlivro);
-    }
-
-static int ProcurarLivro(List<Biblioteca> livros)
-    {
-        Console.WriteLine("Digite o nome do livro que deseja emprestar:");
-        string procurar = LerString();
-
-        foreach(var livro in livros)
-        {
-            if (livro.Titulo == procurar)
-            {
-                Console.WriteLine("Livro encontrado");
-                return livro.Id;
-            }
-        }
-        Console.WriteLine("Livro não encontrado");
-        return 1;
-    } 
-
-static void OperarEmprestimo(List<Biblioteca> livros)
-    {
-        
-    }
-
-
 
 // ====================== CADASTRAR USUÁRIO ==================== //
 static void CadastrarUsuario(List<Usuario> usuarios)
@@ -148,22 +161,57 @@ static void CadastrarUsuario(List<Usuario> usuarios)
 
     }
 
-static void ListarUsuarios(List<Usuario> usuarios)
+// ==================== EMPRESTAR LIVRO ===================== // 
+
+static void EmprestarLivro(List<Emprestimo> emprestimos, List<Biblioteca> livros, List<Usuario> usuarios)
     {
-        if (usuarios.Count > 0)
+
+        Biblioteca? livro = ValidarLivro(livros, SolicitarLivro());
+        Usuario? usuario = ValidarUsuario(usuarios, SolicitarUsuario());
+
+        if(livro == null || usuario == null)
         {
-            foreach (var usuario in usuarios)
-            {
-                Console.WriteLine($"Nome: {usuario.Nome} | ID: {usuario.Id}");
-            }
+            Console.WriteLine("Livro ou usuario não encontrado.");
+            return;
         } else
         {
-            Console.WriteLine("Nenhum usuário cadastrado.");
+            OperarEmprestimo(emprestimos, usuario.Nome, usuario.Id, livro.Titulo);
         }
     }
 
+static string SolicitarLivro()
+    {
+        Console.WriteLine("Digite o nome do livro:");
+        return LerString();
+    }
+
+static string SolicitarUsuario()
+    {
+        Console.WriteLine("Digite seu nome de usuario:");
+        return LerString();
+    }
+
+static Biblioteca? ValidarLivro(List<Biblioteca> livros, string nomeLivro)
+    {
+        return livros.Find(l => l.Titulo == nomeLivro);
+    }
+
+static Usuario? ValidarUsuario(List<Usuario> usuarios, string nomeUsuario)
+    {
+        return usuarios.Find(u => u.Nome == nomeUsuario);
+    }
+
+static void OperarEmprestimo(List<Emprestimo> emprestimos, string nomeUsuario, int idUsuario, string tituloLivro)
+    {
+        Emprestimo novoEmprestimo = new Emprestimo(nomeUsuario, idUsuario, tituloLivro);
+        emprestimos.Add (novoEmprestimo);
+    }
+
+
 // ====================== LEITURA SEGURA ====================== //
-static int LerInt() // Lê e verifica se o numero é inteiro
+
+// Lê e verifica se o numero é inteiro
+static int LerInt() 
     {
        int valor;
 
@@ -175,7 +223,8 @@ static int LerInt() // Lê e verifica se o numero é inteiro
         return valor;
     }
 
-static string LerString() // Lê e verifica se a string não está vazia
+// Lê e verifica se a string não está vazia
+static string LerString() 
     {    
         string? texto;
 
@@ -205,10 +254,11 @@ static int GerarIdAleatorio()
 public class Biblioteca
 {
     public int Id { get; set; }
-    public string? Titulo { get; set; }
+    public string Titulo { get; set; }
     public string? Autor { get; set; }
     public int Quantidade { get; set; }
 
+// BIBLIOTECA
     public Biblioteca(int id, string titulo, string autor, int quantidade)
     {
         Id = id;
@@ -217,17 +267,39 @@ public class Biblioteca
         Quantidade = quantidade;
     }
 
+    public bool EmprestarLivro(string livro)
+        {
+            Quantidade -= 1;
+            return true;
+        }
+
 }
 
+// USUARIO
 public class Usuario
     {
         public int Id { get; set; }
-        public string? Nome { get; set; }
+        public string Nome { get; set; }
 
         public Usuario(int id, string nome)
         {
             Id = id;
             Nome = nome;
+        }
+    }
+
+// EMPRESTIMO
+public class Emprestimo
+    {
+        public string Nome { get; set; }
+        public int IdUsuario { get; set; }
+        public string TituloLivro { get; set; }
+
+        public Emprestimo(string nome, int idusUario, string tituloLivro)
+        {
+            Nome = nome;
+            IdUsuario = idusUario;
+            TituloLivro = tituloLivro;
         }
     }
 }
