@@ -133,6 +133,36 @@ namespace BiblioCore.Services
             livro.Quantidade -= 1;
         }
 
+        // ==================== DEVOLUÇÃO =====================
+
+        static void DevolverLivro(
+            List<Emprestimo> emprestimos,
+            List<Biblioteca> livros,
+            List<Usuario> usuarios)
+        {
+            Emprestimo? emprestado = ValidarEmprestimo(emprestimos, "a");
+            
+                
+            
+
+
+        }
+        // ==================== VALIDAÇÃO =====================
+        private static Biblioteca? ValidarLivro(List<Biblioteca> livros, string nomeLivro)
+        {
+            return livros.Find(l => l.Titulo == nomeLivro);
+        }
+
+        private static Usuario? ValidarUsuario(List<Usuario> usuarios, string nomeUsuario)
+        {
+            return usuarios.Find(u => u.Nome == nomeUsuario);
+        }
+
+        private static Emprestimo? ValidarEmprestimo(List<Emprestimo> emprestimos, string emprestimo)
+        {
+            return emprestimos.Find(e => e.Nome == emprestimo);
+        }
+
         // ==================== AUXILIARES ====================
 
         private static string SolicitarLivro()
@@ -145,16 +175,6 @@ namespace BiblioCore.Services
         {
             Console.WriteLine("Digite o nome do usuário:");
             return LerString();
-        }
-
-        private static Biblioteca? ValidarLivro(List<Biblioteca> livros, string nomeLivro)
-        {
-            return livros.Find(l => l.Titulo == nomeLivro);
-        }
-
-        private static Usuario? ValidarUsuario(List<Usuario> usuarios, string nomeUsuario)
-        {
-            return usuarios.Find(u => u.Nome == nomeUsuario);
         }
 
         private static void OperarEmprestimo(
@@ -172,6 +192,7 @@ namespace BiblioCore.Services
                 $"O livro {tituloLivro} foi emprestado para {nomeUsuario}"
             );
         }
+
 
         // ==================== LEITURA ====================
 
