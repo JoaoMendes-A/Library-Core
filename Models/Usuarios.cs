@@ -2,12 +2,13 @@ namespace BiblioCore.Models
 {
     public class Usuario
     {
-        public int Id { get; set; }
+        private static readonly Random random = new();
+        public int Id { get; }
         public string Nome { get; set; }
 
-        public Usuario(int id, string nome)
+        public Usuario(string nome)
         {
-            Id = id;
+            Id = random.Next(1000, 10000);
             Nome = nome;
         }
     }
