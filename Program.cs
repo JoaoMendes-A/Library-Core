@@ -13,6 +13,21 @@ namespace BiblioCore
             List<Usuario> usuarios = new List<Usuario>();
             List<Emprestimo> emprestimos = new List<Emprestimo>();
 
+            Biblioteca livro1 = new Biblioteca(
+            1,
+            "aaa",
+            "Machado de Assis",
+            5
+            );
+            livros.Add(livro1);
+
+            Usuario usuer1 = new Usuario(
+                12,
+                "Joao"
+            );
+
+            usuarios.Add (usuer1);
+
             bool executando = true;
 
             while (executando)
@@ -36,6 +51,7 @@ namespace BiblioCore
                         break;
 
                     case 4:
+                        BiblioCoreService.DevolverLivro(emprestimos, usuarios);
                         break;
 
                     case 5:

@@ -142,14 +142,12 @@ namespace BiblioCore.Services
 
         // ==================== DEVOLUÇÃO ======================
 
-        static void DevolverLivro(
+        public static void DevolverLivro(
             List<Emprestimo> emprestimos,
-            List<Biblioteca> livros,
-            List<Usuario> usuarios)
+            List<Usuario> usuarios
+            )
         {
             Usuario? usuario = ValidarUsuario(usuarios, SolicitarUsuario());
-            Biblioteca? livro = ValidarLivro(livros, SolicitarLivro());
-            Emprestimo? emprestado = ValidarEmprestimo(emprestimos, usuario.Id);
 
             if (usuario == null)
             {
@@ -157,13 +155,16 @@ namespace BiblioCore.Services
                 return;
             }
 
+            Emprestimo? emprestado = ValidarEmprestimo(emprestimos, usuario.Id);
+
             if (emprestado == null)
             {
                 Console.WriteLine("Emprestimo não encontrado.");
                 return;
             }
-                
-
+            
+            emprestimos.Remove (emprestado);
+            
         }
 
         static void OperarDevolucao(Emprestimo emprestimos, Biblioteca livros)
@@ -207,7 +208,8 @@ namespace BiblioCore.Services
             string nomeUsuario,
             int idUsuario,
             string tituloLivro,
-            int idLivro)
+            int idLivro
+            )
         {
             Emprestimo novoEmprestimo =
                 new Emprestimo(nomeUsuario, idUsuario, tituloLivro, idLivro);
