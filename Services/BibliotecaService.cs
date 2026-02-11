@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using BiblioCore.Models;
 
@@ -117,9 +118,15 @@ namespace BiblioCore.Services
             Biblioteca? livro = ValidarLivro(livros, SolicitarLivro());
             Usuario? usuario = ValidarUsuario(usuarios, SolicitarUsuario());
 
-            if (livro == null || usuario == null)
+            if (livro == null)
             {
-                Console.WriteLine("Livro ou usuário não encontrado.");
+                Console.WriteLine("Livro não encontrado.");
+                return;
+            }
+
+            if (usuario == null)
+            {
+                Console.WriteLine("Usuário não encontrado.");
                 return;
             }
 
@@ -129,24 +136,42 @@ namespace BiblioCore.Services
                 return;
             }
 
-            OperarEmprestimo(emprestimos, usuario.Nome, usuario.Id, livro.Titulo);
+            OperarEmprestimo(emprestimos, usuario.Nome, usuario.Id, livro.Titulo, livro.Id);
             livro.Quantidade -= 1;
         }
 
-        // ==================== DEVOLUÇÃO =====================
+        // ==================== DEVOLUÇÃO ======================
 
         static void DevolverLivro(
             List<Emprestimo> emprestimos,
             List<Biblioteca> livros,
             List<Usuario> usuarios)
         {
-            Emprestimo? emprestado = ValidarEmprestimo(emprestimos, "a");
-            
-                
-            
+            Usuario? usuario = ValidarUsuario(usuarios, SolicitarUsuario());
+            Biblioteca? livro = ValidarLivro(livros, SolicitarLivro());
+            Emprestimo? emprestado = ValidarEmprestimo(emprestimos, usuario.Id);
 
+            if (usuario == null)
+            {
+                Console.WriteLine("Usuário não encontrado.");
+                return;
+            }
+
+            if (emprestado == null)
+            {
+                Console.WriteLine("Emprestimo não encontrado.");
+                return;
+            }
+                
 
         }
+
+        static void OperarDevolucao(Emprestimo emprestimos, Biblioteca livros)
+        {
+            
+        }
+    
+        
         // ==================== VALIDAÇÃO =====================
         private static Biblioteca? ValidarLivro(List<Biblioteca> livros, string nomeLivro)
         {
@@ -158,9 +183,9 @@ namespace BiblioCore.Services
             return usuarios.Find(u => u.Nome == nomeUsuario);
         }
 
-        private static Emprestimo? ValidarEmprestimo(List<Emprestimo> emprestimos, string emprestimo)
+        private static Emprestimo? ValidarEmprestimo(List<Emprestimo> emprestimos, int idEmprestimo)
         {
-            return emprestimos.Find(e => e.Nome == emprestimo);
+            return emprestimos.Find(e => e.IdUsuario == idEmprestimo);
         }
 
         // ==================== AUXILIARES ====================
@@ -181,10 +206,11 @@ namespace BiblioCore.Services
             List<Emprestimo> emprestimos,
             string nomeUsuario,
             int idUsuario,
-            string tituloLivro)
+            string tituloLivro,
+            int idLivro)
         {
             Emprestimo novoEmprestimo =
-                new Emprestimo(nomeUsuario, idUsuario, tituloLivro);
+                new Emprestimo(nomeUsuario, idUsuario, tituloLivro, idLivro);
 
             emprestimos.Add(novoEmprestimo);
 
